@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+use strict;
+use Net::Telnet;
+
+my $username = 'admin';
+my $password = 'admin';
+my $host = '192.168.0.1';
+
+my $telnet = new Net::Telnet ( Timeout=>10, Errmode=>'die');
+$telnet->open($host);
+$telnet->waitfor('/Username:$/i');
+$telnet->print($username);
+$telnet->waitfor('/Password:$/i');
+$telnet->print($password);
+$telnet->waitfor('/> $/i');
+$telnet->print('enable');
+$telnet->waitfor('/Enter password: $/i');
+$telnet->print($password);
+$telnet->waitfor('/# $/i');
+$telnet->print('sys reboot');
+$telnet->waitfor('/:/i');
+$telnet->print('Y');
+
+exit(0);
